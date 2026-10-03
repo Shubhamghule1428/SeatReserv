@@ -1,0 +1,23 @@
+package com.ssg.seatreserv.api.helper;
+
+public enum ErrorCodeMaster {
+	
+	SEAT_ALREADY_TAKEN,
+
+    PER_USER_LIMIT_EXCEEDED,
+
+    IDEMPOTENCY_KEY_REUSED,
+
+    RESERVATION_NOT_FOUND,
+
+    RESERVATION_NOT_OWNED,
+
+    RESERVATION_NOT_CANCELLABLE,
+
+    SHOW_NOT_FOUND,
+
+    INVALID_SEAT,
+
+    INVALID_REQUEST
+
+}
