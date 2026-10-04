@@ -1,0 +1,48 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: seatreserv-mysql
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: seatdb
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DB_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  seatreserv:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: seatreserv
+    restart: unless-stopped
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/seatdb?useAffectedRows=true&cachePrepStmts=true&prepStmtCacheSize=250&prepStmtCacheSqlLimit=2048&useServerPrepStmts=true
+      DB_USERNAME: root
+      DB_PASSWORD: ${DB_PASSWORD}
+
+      DB_POOL_SIZE: 20
+      DB_MIN_IDLE: 5
+      MAX_USER_SEAT_LIMIT: 3
+
+volumes:
+  mysql_data:

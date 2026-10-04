@@ -32,7 +32,7 @@ public class UserService {
 		
 		user = userRepo.save(user);
 		
-		return ResponseBuilder.createUserResponse(request, null, null);
+		return ResponseBuilder.createUserResponse(request, user.getUserId(), user.getToken());
 	}
 	
 }

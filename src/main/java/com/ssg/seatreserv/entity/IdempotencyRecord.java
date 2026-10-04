@@ -19,17 +19,32 @@ public class IdempotencyRecord {
 	private int responseCode;
 	@Column(name = "response_body", columnDefinition = "TEXT")
 	private String responseBody;
+	
+	@Column(name="request_hash")
+	private String requestHash;
+	
 	@Column(name = "created_at")
 	private Instant createdAt = Instant.now();
 
 	public IdempotencyRecord() {
 	}
 
-	public IdempotencyRecord(String key, String userId, int responseCode, String responseBody) {
+	public IdempotencyRecord(String key, String userId, int responseCode, String responseBody, String requestHash) {
 		this.key = key;
 		this.userId = userId;
 		this.responseCode = responseCode;
 		this.responseBody = responseBody;
+		this.requestHash = requestHash;
+	}
+
+	
+	
+	public String getRequestHash() {
+		return requestHash;
+	}
+
+	public void setRequestHash(String requestHash) {
+		this.requestHash = requestHash;
 	}
 
 	public int getResponseCode() {

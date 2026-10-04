@@ -1,13 +1,12 @@
 package com.ssg.seatreserv.api.response;
 
 import java.util.List;
-import java.util.UUID;
 
 public record CreateShowResponse(String name,
 		List<SeatResponse> seats,
-		long pricePaisem,
+		long pricePaise,
 		int userLimt,
-		UUID showId,
+		String showId,
 		String result) {
 	
 	

@@ -7,8 +7,8 @@ import com.ssg.seatreserv.api.helper.ReservationStatus;
 
 public record CancelReservationResponse(
         UUID reservationId,
-        UUID showId,
-        UUID userId,
+        String showId,
+        String userId,
         List<String> seats,
         ReservationStatus status
 ) {

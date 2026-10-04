@@ -3,10 +3,16 @@ package com.ssg.seatreserv.entity;
 import java.time.Instant;
 import java.util.UUID;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
+
+import com.ssg.seatreserv.api.helper.ReservationStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -14,24 +20,29 @@ import jakarta.persistence.Table;
 @Table(name = "reservations")
 public class Reservation {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
+	@UuidGenerator
+	@JdbcTypeCode(SqlTypes.CHAR)
+	@Column(name = "id",columnDefinition = "CHAR(36)")
 	private UUID id;
 	@Column(name = "show_id")
-	private UUID showId;
+	private String showId;
+	
+	@JdbcTypeCode(SqlTypes.CHAR)
 	@Column(name = "seat_id")
 	private UUID seatId;
 	@Column(name = "user_id")
 	private String userId;
+	
+//	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "status")
-	private String status;
+	private ReservationStatus status;
 	@Column(name = "created_at")
 	private Instant createdAt = Instant.now();
 
 	public Reservation() {
 	}
 
-	public Reservation(UUID showId, UUID seatId, String userId, String status) {
+	public Reservation(String showId, UUID seatId, String userId, ReservationStatus status) {
 		this.showId = showId;
 		this.seatId = seatId;
 		this.userId = userId;
@@ -42,15 +53,33 @@ public class Reservation {
 		return id;
 	}
 
-	public String getStatus() {
+	public ReservationStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(ReservationStatus status) {
 		this.status = status;
 	}
 
 	public UUID getSeatId() {
 		return seatId;
 	}
+
+	public String getShowId() {
+		return showId;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setShowId(String showId) {
+		this.showId = showId;
+	}
+	
+	
 }
