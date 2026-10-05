@@ -27,6 +27,6 @@ COPY entrypoint.sh /app/entrypoint.sh
 RUN sed -i 's/\r$//' /app/entrypoint.sh && chmod +x /app/entrypoint.sh
 
 # Expose Spring Boot web port and internal MySQL port
-EXPOSE 10000 3306
+EXPOSE 8080 3306
 
 ENTRYPOINT ["/app/entrypoint.sh"]

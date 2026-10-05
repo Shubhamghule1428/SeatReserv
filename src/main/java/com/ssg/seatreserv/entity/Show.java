@@ -6,26 +6,27 @@ import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="shows")
+@Table(name = "shows", indexes = { @Index(name = "idx_shows_created_at", columnList = "created_at") })
 public class Show {
 
 	@Id
 	@Column(name = "id")
 	private String showId;
-	
+
 	@Column(name = "name")
 	private String name;
-	
+
 	@Column(name = "price")
 	private long pricePaise;
-	
+
 	@Column(name = "total_seats")
 	private long totalSeat;
-	
+
 	@Column(name = "user_seat_limit")
 	private int userSeatLimit;
 
@@ -65,11 +66,11 @@ public class Show {
 	public void setTotalSeat(long totalSeat) {
 		this.totalSeat = totalSeat;
 	}
-	
-	public int getUserSeatLimit(){
+
+	public int getUserSeatLimit() {
 		return this.userSeatLimit;
 	}
-	
+
 	public void setUserSeatLimit(int userSeatLimit) {
 		this.userSeatLimit = userSeatLimit;
 	}
@@ -81,12 +82,12 @@ public class Show {
 	public void setShowId(String showId) {
 		this.showId = showId;
 	}
-	
+
 	@PrePersist
 	public void generateId() {
-		if(this.showId == null) {
-			this.showId = name+"-"+ UUID.randomUUID().toString().substring(0,8).toUpperCase();
+		if (this.showId == null) {
+			this.showId = name + "-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 		}
 	}
-	
+
 }

@@ -13,10 +13,11 @@ import org.hibernate.type.SqlTypes;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", indexes = { @Index(name = "idx_users_token", columnList = "token", unique = true) })
 public class User {
 
 	@Id
@@ -33,12 +34,12 @@ public class User {
 
 	@Column(name = "token")
 	private String token;
-	
+
 	public User(String name, long mobNo) {
 		this.name = name;
 		this.mobNo = mobNo;
 	}
-	
+
 	public User() {
 	}
 
@@ -69,7 +70,6 @@ public class User {
 	public String getToken() {
 		return token;
 	}
-
 
 	public void sha256() throws NoSuchAlgorithmException {
 		String text = this.name + this.mobNo;

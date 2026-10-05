@@ -5,10 +5,12 @@ import java.time.Instant;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "idempotency_keys")
+@Table(name = "idempotency_keys", indexes = { @Index(name = "idx_idempotency_created_at", columnList = "created_at"),
+		@Index(name = "idx_idempotency_user", columnList = "user_id") })
 public class IdempotencyRecord {
 	@Id
 	@Column(name = "key")
@@ -19,10 +21,10 @@ public class IdempotencyRecord {
 	private int responseCode;
 	@Column(name = "response_body", columnDefinition = "TEXT")
 	private String responseBody;
-	
-	@Column(name="request_hash")
+
+	@Column(name = "request_hash")
 	private String requestHash;
-	
+
 	@Column(name = "created_at")
 	private Instant createdAt = Instant.now();
 
@@ -37,8 +39,6 @@ public class IdempotencyRecord {
 		this.requestHash = requestHash;
 	}
 
-	
-	
 	public String getRequestHash() {
 		return requestHash;
 	}

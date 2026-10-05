@@ -11,32 +11,36 @@ import com.ssg.seatreserv.api.helper.SeatStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Version;
 
 @Entity
-@Table(name = "seats")
+@Table(name = "seats", indexes = {
+		@Index(name = "idx_seats_show_status", columnList = "show_id,status") }, uniqueConstraints = {
+				@UniqueConstraint(name = "uq_show_seat", columnNames = { "show_id", "seat_no" }) })
 public class Seat {
 
 	@Id
 	@UuidGenerator
 	@JdbcTypeCode(SqlTypes.CHAR)
-    @Column(name = "id", columnDefinition = "CHAR(36)")
+	@Column(name = "id", columnDefinition = "CHAR(36)")
 	private UUID seatId;
-	
+
 	@Column(name = "show_id")
 	private String showId;
-	
+
 	@Column(name = "seat_no")
 	private String seatNumber;
-	
+
 	@Column(name = "status")
 	private SeatStatus status;
-	
+
 	@Version
 	@Column(name = "version")
 	private long version;
-	
+
 	public Seat(String showId, String seatNumber) {
 		this.showId = showId;
 		this.seatNumber = seatNumber;
@@ -69,7 +73,7 @@ public class Seat {
 	public void setStatus(SeatStatus status) {
 		this.status = status;
 	}
-	
+
 	public String getSeatNumber() {
 		return seatNumber;
 	}
@@ -87,9 +91,10 @@ public class Seat {
 	}
 
 	public static Seat createSeat(String showId, String seatNumber) {
-		Seat seat = new Seat(showId, seatNumber);;
+		Seat seat = new Seat(showId, seatNumber);
+		;
 		seat.setStatus(SeatStatus.AVAILABLE);
 		return seat;
 	}
-	
+
 }

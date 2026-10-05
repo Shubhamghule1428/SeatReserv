@@ -152,7 +152,7 @@ public class ShowService {
 				idempotencyHits.increment();
 
 				try {
-					if(requestHash != null && requestHash.equals(existing.get().getRequestHash())) {
+					if(requestHash != null && !requestHash.equals(existing.get().getRequestHash())) {
 						throw new IdempotencyException("Request tampering: not matched request hash");
 					}
 					return objectMapper.readValue(existing.get().getResponseBody(), ReserveSeatResponse.class);

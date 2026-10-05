@@ -11,28 +11,29 @@ import com.ssg.seatreserv.api.helper.ReservationStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "reservations")
+@Table(name = "reservations", indexes = { @Index(name = "idx_res_user", columnList = "user_id"),
+		@Index(name = "idx_res_user_show", columnList = "user_id,show_id"),
+		@Index(name = "idx_res_created_at", columnList = "created_at") })
 public class Reservation {
 	@Id
 	@UuidGenerator
 	@JdbcTypeCode(SqlTypes.CHAR)
-	@Column(name = "id",columnDefinition = "CHAR(36)")
+	@Column(name = "id", columnDefinition = "CHAR(36)")
 	private UUID id;
 	@Column(name = "show_id")
 	private String showId;
-	
+
 	@JdbcTypeCode(SqlTypes.CHAR)
 	@Column(name = "seat_id")
 	private UUID seatId;
 	@Column(name = "user_id")
 	private String userId;
-	
+
 //	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "status")
 	private ReservationStatus status;
@@ -80,6 +81,5 @@ public class Reservation {
 	public void setShowId(String showId) {
 		this.showId = showId;
 	}
-	
-	
+
 }
